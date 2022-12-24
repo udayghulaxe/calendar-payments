@@ -10,7 +10,7 @@ const CalendarPage = () => {
 
   return (
     <div className="calendar-page mx-auto max-w-screen-xl px-2 md:px-16 page__container">
-      <h1>Calendar</h1>
+      <h1 data-testid='calendarHeading'>Calendar</h1>
       <div className="page-details__container">
         {authSlice.isSignedIn ? (
           <CalendarEvents/>

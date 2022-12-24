@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from "./pages/HomePage/HomePage";
 import Header from "./components/Header/Header";
 import CalendarPage from "./pages/CalendarPage/CalendarPage";
-import PaymentsPage from "./pages/PaymentsPage/PayementsPage";
+import PaymentsPage from "./pages/PaymentsPage/PaymentsPage";
 
 const PageRouter = () => {
   return (
