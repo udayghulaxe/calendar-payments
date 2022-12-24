@@ -14,6 +14,7 @@ const GoogleLogin = () => {
 
   useEffect(() => {
     loadGoogleAPIScript();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**

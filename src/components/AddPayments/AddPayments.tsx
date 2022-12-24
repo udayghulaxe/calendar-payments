@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Constants } from "../../globals";
 
 const AddPayments = () => {
   interface Errors {
@@ -21,7 +22,7 @@ const AddPayments = () => {
   const [errorsState, setErrorsState] = useState<Errors>(errors);
   const [formState, setFormState] = useState<Errors>(errors);
   const [valid, setValid] = useState(false);
-  const [routingMessage, setRoutingMessage] = useState<string>('');
+  const [routingMessage, setRoutingMessage] = useState<string>("");
 
   const handleChange = (event: {
     preventDefault: () => void;
@@ -34,7 +35,7 @@ const AddPayments = () => {
     const tempErrors = JSON.parse(JSON.stringify(errorsState));
 
     // Validate for empty values
-    tempErrors[name] = value.length === 0 ? "Please enter a value" : "";
+    tempErrors[name] = value.length === 0 ? Constants.EMPTY_ERROR : "";
 
     // Validate for only alphabates
     if (
@@ -42,27 +43,25 @@ const AddPayments = () => {
       value.length > 0
     ) {
       tempErrors[name] = !alphaRegex.test(value)
-        ? "Only alphabates allowed"
+        ? Constants.ALPHABATES_ERROR
         : "";
     }
 
-    // Validate for and fetch routing number details
+    // Validate and fetch routing number details
     if (name === "routingNumber" && value.length > 0) {
       if (value.length === 9) {
         // Empty out any previous bank name
-        setRoutingMessage('');
+        setRoutingMessage("");
         validateRoutingNumber(value);
       } else {
-        tempErrors[name] = "Routing number should be 9 digits";
+        tempErrors[name] = Constants.ROUTING_ERROR;
       }
     }
 
     // Validate account number and confirm account number
     if (name === "accountNumber" || name === "confirmAccountNumber") {
       tempErrors[name] =
-        value.length < 5 || value.length > 17
-          ? "Length should be between 5 to 17"
-          : "";
+        value.length < 5 || value.length > 17 ? Constants.LENGTH_ERROR : "";
       if (
         confirmAccountRef.current?.value !== "" &&
         accountRef.current?.value !== ""
@@ -70,7 +69,7 @@ const AddPayments = () => {
         tempErrors["accountNumber"] = tempErrors["accountNumber"] = "";
         tempErrors[name] =
           confirmAccountRef.current?.value !== accountRef.current?.value
-            ? "Account number and confirm account number should match"
+            ? Constants.ACCOUNT_ERROR
             : "";
       }
     }
@@ -99,16 +98,16 @@ const AddPayments = () => {
    * @param value - Routing Number
    */
   const validateRoutingNumber = (value: string) => {
-    fetch(`https://www.routingnumbers.info/api/name.json?rn=${value}`, {
+    fetch(`${Constants.ROUTING_API_URL}?rn=${value}`, {
       method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.code === 200) {
-            setRoutingMessage(`Bank Name: ${data.name}`);
+          setRoutingMessage(`Bank Name: ${data.name}`);
         } else {
-            const newData = { ...errorsState, routingNumber: data.message };
-            setErrorsState(newData);
+          const newData = { ...errorsState, routingNumber: data.message };
+          setErrorsState(newData);
         }
       })
       .catch((error) => {
@@ -157,7 +156,10 @@ const AddPayments = () => {
           {errorsState.routingNumber.length > 0 && (
             <span className="error">{errorsState.routingNumber}</span>
           )}
-          {routingMessage.length > 0 && !(errorsState.routingNumber.length > 0) && <span className="success">{routingMessage}</span>}
+          {routingMessage.length > 0 &&
+            !(errorsState.routingNumber.length > 0) && (
+              <span className="success">{routingMessage}</span>
+            )}
         </div>
 
         <div className="mb-3 md:w-96 xl:w-96">

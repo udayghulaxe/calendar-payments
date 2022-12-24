@@ -14,6 +14,7 @@ const CalendarEvents = () => {
     if (authSlice.isSignedIn) {
       dispatch(getCalendarEvents());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authSlice]);
 
   const columns = [
