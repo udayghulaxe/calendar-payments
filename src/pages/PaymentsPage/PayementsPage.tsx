@@ -6,7 +6,7 @@ const PaymentsPage = () => {
     <div className="payment-page mx-auto max-w-screen-xl px-16 page__container">
       <h1>Add Payments</h1>
       <div className="page-details__container">
-        <AddPayments></AddPayments>
+        <AddPayments/>
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ const AddPayments = () => {
   }
   const accountRef = useRef<HTMLInputElement>(null);
   const confirmAccountRef = useRef<HTMLInputElement>(null);
-  let alphaRegex = /^[a-z A-Z]+$/;
+  let alphaRegex = /^[a-zA-Z]/;
   const errors: Errors = {
     customerName: "",
     routingNumber: "",

@@ -13,11 +13,11 @@ const CalendarPage = () => {
       <h1>Calendar</h1>
       <div className="page-details__container">
         {authSlice.isSignedIn ? (
-          <CalendarEvents></CalendarEvents>
+          <CalendarEvents/>
         ) : (
           <>
             <p className="pb-4">Please login to access your calendar events</p>
-            <GoogleLogin></GoogleLogin>
+            <GoogleLogin/>
           </>
         )}
       </div>
