@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCalendarEvents } from "../../store/calendarSlice";
 import { RootState } from "../../store";
+import DataTable from "react-data-table-component";
+
 import "./CalendarEvents.scss";
 
 const CalendarEvents = () => {
@@ -14,31 +16,38 @@ const CalendarEvents = () => {
     }
   }, [authSlice]);
 
+  const columns = [
+    {
+      name: "Summary",
+      selector: (row: any) => row.summary,
+    },
+    {
+      name: "Status",
+      selector: (row: any) => row.status,
+    },
+    {
+      name: "Start Time",
+      format: (row: any) => new Date(row.start.dateTime).toLocaleString(),
+      selector: (row: any) => row.start.dateTime,
+      sortable: true,
+    },
+    {
+      name: "End Time",
+      format: (row: any) => new Date(row.end.dateTime).toLocaleString(),
+      selector: (row: any) => row.end.dateTime.toLocaleString(),
+      sortable: true,
+    },
+    
+  ];
+
   return calendarSlice.calendarEvents.length > 0 ? (
-    calendarSlice.calendarEvents[0] !== false ? <section className="calendar-events__container">
-      <header>
-        <div className="row">
-          <div className="col">Summary</div>
-          <div className="col">Start Date</div>
-          <div className="col">End Date</div>
-        </div>
-      </header>
-      <div className="details">
-        {calendarSlice.calendarEvents.map((event, index) => {
-          return (
-            <div className="row" key={`row-${index}`}>
-              <span className="col">{event.summary}</span>
-              <span className="col">
-                {new Date(event.start.dateTime).toLocaleString()}
-              </span>
-              <span className="col">
-                {new Date(event.end.dateTime).toLocaleString()}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    </section> : <div>You do not have any events on calendar.</div>
+    calendarSlice.calendarEvents[0] !== false ? (
+      <section className="calendar-events__container">
+        <DataTable pagination columns={columns} data={calendarSlice.calendarEvents} />
+      </section>
+    ) : (
+      <div>You do not have any events on calendar.</div>
+    )
   ) : (
     <div>Loading Calendar Events...</div>
   );
